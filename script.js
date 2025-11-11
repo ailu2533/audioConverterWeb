@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 移动端导航菜单（如果需要的话）
     setupMobileMenu();
+    
+    // 输出语言信息用于调试
+    console.log('🌐 Browser Language:', navigator.language || navigator.userLanguage);
+    console.log('📝 Current Page Language:', document.documentElement.getAttribute('lang'));
 });
 
 // 多语言数据
@@ -134,25 +138,39 @@ const translations = {
 
 // 多语言支持初始化
 function initializeLanguageSupport() {
-    // 从本地存储获取用户偏好语言，默认为中文
-    const savedLanguage = localStorage.getItem('preferred-language') || 'zh';
     const langSwitch = document.getElementById('langSwitch');
-    
-    // 设置初始语言
-    setLanguage(savedLanguage);
     
     // 绑定语言切换事件
     langSwitch.addEventListener('click', toggleLanguage);
     
-    // 根据浏览器语言自动设置（仅首次访问时）
-    if (!localStorage.getItem('preferred-language')) {
-        const browserLang = navigator.language.toLowerCase();
-        if (browserLang.startsWith('en')) {
-            setLanguage('en');
+    // 智能选择语言
+    let languageToUse = 'zh'; // 默认中文
+    
+    // 1. 首先检查是否有用户保存的偏好语言
+    const savedLanguage = localStorage.getItem('preferred-language');
+    
+    if (savedLanguage) {
+        // 如果用户之前选择过语言，使用保存的语言
+        languageToUse = savedLanguage;
+    } else {
+        // 如果是首次访问，根据浏览器语言智能选择
+        const browserLang = navigator.language || navigator.userLanguage;
+        
+        // 检测浏览器语言
+        // 支持的中文语言代码：zh, zh-CN, zh-TW, zh-HK, zh-SG
+        if (browserLang && browserLang.toLowerCase().startsWith('zh')) {
+            languageToUse = 'zh';
         } else {
-            setLanguage('zh');
+            // 其他语言都使用英文
+            languageToUse = 'en';
         }
+        
+        // 保存自动检测的语言（用户可以随时切换）
+        localStorage.setItem('preferred-language', languageToUse);
     }
+    
+    // 设置初始语言
+    setLanguage(languageToUse);
 }
 
 // 切换语言
