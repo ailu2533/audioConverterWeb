@@ -24,17 +24,17 @@ document.addEventListener('DOMContentLoaded', function() {
 const translations = {
     'zh': {
         // 导航栏
-        'nav-title': 'Audio Converter',
+        'nav-title': '音频快转',
         'nav-features': '功能',
         'nav-download': '下载',
         'nav-contact': '联系',
         
         // 主页横幅
-        'hero-title': '专业音频转换工具',
+        'hero-title': '音频快转 - 专业音频转换工具',
         'hero-subtitle': '快速、高质量、支持多种格式的音频转换应用',
         'hero-download': '免费下载',
         'hero-learn-more': '了解更多',
-        'preview-title': 'Audio Converter',
+        'preview-title': '音频快转',
         
         // 功能特色
         'features-title': '强大功能',
@@ -69,7 +69,7 @@ const translations = {
         'footer-features': '功能特色',
         'footer-download': '下载应用',
         'footer-contact': '联系我们',
-        'footer-copyright': '© 2025 Audio Converter. 保留所有权利.',
+        'footer-copyright': '© 2025 音频快转. 保留所有权利.',
         
         // 模态框
         'modal-coming-soon': '🚀 即将推出',
@@ -227,9 +227,9 @@ function updatePageMeta(lang) {
         document.querySelector('meta[name="description"]').content = 
             'Professional audio format conversion app with high-quality output, multiple format support, and easy-to-use interface.';
     } else {
-        document.title = 'Audio Converter - 专业音频转换工具';
+        document.title = '音频快转 - 专业音频转换工具';
         document.querySelector('meta[name="description"]').content = 
-            '专业的音频格式转换应用，支持多种格式转换，高质量输出，简单易用。';
+            '音频快转是一款专业的音频格式转换应用，支持多种格式转换，高质量输出，简单易用。';
     }
 }
 
