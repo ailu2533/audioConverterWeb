@@ -1,5 +1,8 @@
-// Landing Page JavaScript
+// Landing Page JavaScript with Multi-language Support
 document.addEventListener('DOMContentLoaded', function() {
+    // 初始化多语言支持
+    initializeLanguageSupport();
+    
     // 平滑滚动到锚点
     setupSmoothScrolling();
     
@@ -12,6 +15,205 @@ document.addEventListener('DOMContentLoaded', function() {
     // 移动端导航菜单（如果需要的话）
     setupMobileMenu();
 });
+
+// 多语言数据
+const translations = {
+    'zh': {
+        // 导航栏
+        'nav-title': 'Audio Converter',
+        'nav-features': '功能',
+        'nav-download': '下载',
+        'nav-contact': '联系',
+        
+        // 主页横幅
+        'hero-title': '专业音频转换工具',
+        'hero-subtitle': '快速、高质量、支持多种格式的音频转换应用',
+        'hero-download': '免费下载',
+        'hero-learn-more': '了解更多',
+        'preview-title': 'Audio Converter',
+        
+        // 功能特色
+        'features-title': '强大功能',
+        'feature-speed-title': '高速转换',
+        'feature-speed-desc': '采用优化算法，转换速度快，处理大文件也毫无压力',
+        'feature-quality-title': '高质量输出',
+        'feature-quality-desc': '保持音频原有质量，支持多种采样率和比特率设置',
+        'feature-formats-title': '多格式支持',
+        'feature-formats-desc': '支持 MP3、WAV、M4A、OGG、FLAC 等主流音频格式',
+        'feature-privacy-title': '隐私安全',
+        'feature-privacy-desc': '本地处理，文件不上传服务器，保护您的隐私安全',
+        'feature-batch-title': '批量处理',
+        'feature-batch-desc': '支持批量选择和转换多个文件，提高工作效率',
+        'feature-ui-title': '简洁界面',
+        'feature-ui-desc': '直观易用的界面设计，操作简单，上手即用',
+        
+        // 下载区域
+        'download-title': '立即下载',
+        'download-subtitle': '支持多个平台，选择适合您的版本',
+        'ios-store': 'App Store',
+        'android-store': 'Google Play',
+        'desktop-platform': '桌面版',
+        
+        // 联系区域
+        'contact-title': '联系我们',
+        'contact-question': '有问题或建议？',
+        'contact-feedback': '我们很乐意听到您的反馈，帮助我们改进产品。',
+        'github-project': 'GitHub 项目',
+        
+        // 页脚
+        'footer-desc': '专业的音频转换工具',
+        'footer-features': '功能特色',
+        'footer-download': '下载应用',
+        'footer-contact': '联系我们',
+        'footer-copyright': '© 2025 Audio Converter. 保留所有权利.',
+        
+        // 模态框
+        'modal-coming-soon': '🚀 即将推出',
+        'modal-platform-developing': '版本正在开发中，敬请期待！',
+        'modal-github-follow': '您可以关注我们的 GitHub 项目获取最新进展。',
+        'modal-view-github': '查看 GitHub',
+        'modal-close': '关闭'
+    },
+    'en': {
+        // Navigation
+        'nav-title': 'Audio Converter',
+        'nav-features': 'Features',
+        'nav-download': 'Download',
+        'nav-contact': 'Contact',
+        
+        // Hero Section
+        'hero-title': 'Professional Audio Converter',
+        'hero-subtitle': 'Fast, high-quality audio conversion app supporting multiple formats',
+        'hero-download': 'Free Download',
+        'hero-learn-more': 'Learn More',
+        'preview-title': 'Audio Converter',
+        
+        // Features
+        'features-title': 'Powerful Features',
+        'feature-speed-title': 'High-Speed Conversion',
+        'feature-speed-desc': 'Optimized algorithms for fast conversion, handles large files effortlessly',
+        'feature-quality-title': 'High-Quality Output',
+        'feature-quality-desc': 'Maintains original audio quality with support for various sample rates and bitrates',
+        'feature-formats-title': 'Multiple Format Support',
+        'feature-formats-desc': 'Supports mainstream audio formats including MP3, WAV, M4A, OGG, FLAC',
+        'feature-privacy-title': 'Privacy & Security',
+        'feature-privacy-desc': 'Local processing, no file uploads to servers, protecting your privacy',
+        'feature-batch-title': 'Batch Processing',
+        'feature-batch-desc': 'Support for batch selection and conversion of multiple files for efficiency',
+        'feature-ui-title': 'Clean Interface',
+        'feature-ui-desc': 'Intuitive and user-friendly interface design, simple operation',
+        
+        // Download Section
+        'download-title': 'Download Now',
+        'download-subtitle': 'Available on multiple platforms, choose your version',
+        'ios-store': 'App Store',
+        'android-store': 'Google Play',
+        'desktop-platform': 'Desktop',
+        
+        // Contact Section
+        'contact-title': 'Contact Us',
+        'contact-question': 'Questions or Suggestions?',
+        'contact-feedback': 'We\'d love to hear your feedback to help us improve our product.',
+        'github-project': 'GitHub Project',
+        
+        // Footer
+        'footer-desc': 'Professional Audio Conversion Tool',
+        'footer-features': 'Features',
+        'footer-download': 'Download App',
+        'footer-contact': 'Contact Us',
+        'footer-copyright': '© 2025 Audio Converter. All rights reserved.',
+        
+        // Modal
+        'modal-coming-soon': '🚀 Coming Soon',
+        'modal-platform-developing': 'version is in development, stay tuned!',
+        'modal-github-follow': 'You can follow our GitHub project for the latest updates.',
+        'modal-view-github': 'View GitHub',
+        'modal-close': 'Close'
+    }
+};
+
+// 多语言支持初始化
+function initializeLanguageSupport() {
+    // 从本地存储获取用户偏好语言，默认为中文
+    const savedLanguage = localStorage.getItem('preferred-language') || 'zh';
+    const langSwitch = document.getElementById('langSwitch');
+    
+    // 设置初始语言
+    setLanguage(savedLanguage);
+    
+    // 绑定语言切换事件
+    langSwitch.addEventListener('click', toggleLanguage);
+    
+    // 根据浏览器语言自动设置（仅首次访问时）
+    if (!localStorage.getItem('preferred-language')) {
+        const browserLang = navigator.language.toLowerCase();
+        if (browserLang.startsWith('en')) {
+            setLanguage('en');
+        } else {
+            setLanguage('zh');
+        }
+    }
+}
+
+// 切换语言
+function toggleLanguage() {
+    const currentLang = document.documentElement.getAttribute('lang') || 'zh';
+    const newLang = currentLang === 'zh' ? 'en' : 'zh';
+    setLanguage(newLang);
+}
+
+// 设置语言
+function setLanguage(lang) {
+    // 更新 HTML lang 属性
+    document.documentElement.setAttribute('lang', lang);
+    
+    // 更新语言切换按钮文本
+    const langSwitch = document.getElementById('langSwitch');
+    const langText = langSwitch.querySelector('.lang-text');
+    langText.textContent = lang === 'zh' ? 'EN' : '中文';
+    
+    // 保存到本地存储
+    localStorage.setItem('preferred-language', lang);
+    
+    // 应用翻译
+    applyTranslations(lang);
+    
+    // 更新页面标题和描述
+    updatePageMeta(lang);
+}
+
+// 应用翻译
+function applyTranslations(lang) {
+    const translation = translations[lang] || translations['zh'];
+    
+    // 查找所有需要翻译的元素
+    const elementsToTranslate = document.querySelectorAll('[data-translate]');
+    
+    elementsToTranslate.forEach(element => {
+        const key = element.getAttribute('data-translate');
+        if (translation[key]) {
+            // 使用淡入淡出效果
+            element.style.opacity = '0.5';
+            setTimeout(() => {
+                element.textContent = translation[key];
+                element.style.opacity = '1';
+            }, 150);
+        }
+    });
+}
+
+// 更新页面元数据
+function updatePageMeta(lang) {
+    if (lang === 'en') {
+        document.title = 'Audio Converter - Professional Audio Conversion Tool';
+        document.querySelector('meta[name="description"]').content = 
+            'Professional audio format conversion app with high-quality output, multiple format support, and easy-to-use interface.';
+    } else {
+        document.title = 'Audio Converter - 专业音频转换工具';
+        document.querySelector('meta[name="description"]').content = 
+            '专业的音频格式转换应用，支持多种格式转换，高质量输出，简单易用。';
+    }
+}
 
 // 平滑滚动设置
 function setupSmoothScrolling() {
@@ -135,20 +337,23 @@ function setupMobileMenu() {
 
 // 显示"即将推出"消息的函数
 function showComingSoon(platform) {
+    const currentLang = document.documentElement.getAttribute('lang') || 'zh';
+    const translation = translations[currentLang];
+    
     // 创建模态框显示消息
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.innerHTML = `
         <div class="modal-content">
-            <h3>🚀 即将推出</h3>
-            <p>${platform} 版本正在开发中，敬请期待！</p>
-            <p>您可以关注我们的 GitHub 项目获取最新进展。</p>
+            <h3>${translation['modal-coming-soon']}</h3>
+            <p>${platform} ${translation['modal-platform-developing']}</p>
+            <p>${translation['modal-github-follow']}</p>
             <div class="modal-buttons">
                 <a href="https://github.com/your-username/audioConverterWeb" target="_blank" class="btn-primary">
-                    查看 GitHub
+                    ${translation['modal-view-github']}
                 </a>
                 <button onclick="closeModal()" class="btn-secondary">
-                    关闭
+                    ${translation['modal-close']}
                 </button>
             </div>
         </div>
@@ -275,6 +480,15 @@ const modalStyles = `
     .navbar.scrolled {
         background: rgba(255, 255, 255, 0.98);
         box-shadow: 0 2px 25px rgba(0,0,0,0.15);
+    }
+    
+    /* 语言切换过渡效果 */
+    [data-translate] {
+        transition: opacity 0.3s ease;
+    }
+    
+    .language-switching [data-translate] {
+        opacity: 0.7;
     }
 `;
 
