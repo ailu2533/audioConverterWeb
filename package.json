@@ -1,0 +1,26 @@
+{
+  "name": "audio-converter-web",
+  "version": "1.0.0",
+  "description": "A web-based audio converter tool",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx http-server . -p 3000 -o",
+    "dev": "npx http-server . -p 3000 -o",
+    "build": "npm run copy-files",
+    "copy-files": "mkdir -p dist && cp index.html style.css script.js dist/",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "audio",
+    "converter",
+    "web",
+    "javascript",
+    "html5"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "private": false
+}
